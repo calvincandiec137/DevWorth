@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevWorth</title>
+    <link rel="stylesheet" href="/static/home.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-content">
+        <a href="#" class="navbar-brand">DevWorth</a>
+        <a href="/profile" class="nav-link">Profile</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Select Your Documentation</h5>
+              <select id="documentation-select">
+                <option value="">Choose documentation...</option>
+                <option value="python">Python</option>
+                <option value="c">C langauge</option>
+                <option value="java">Java</option>
+              </select>
+            </div>
+          </div>
+          <div id="pdf-section" class="card hidden">
+            <div class="card-body">
+              <div class="documentation-header">
+                <h5 class="card-title">Documentation</h5>
+                <button class="close-btn" id="close-pdf">&times;</button>
+              </div>
+              <iframe id="pdf-viewer" src=""></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Streak</h5>
+              <div class="streak-container">
+                <div class="streak-fire-container">
+                  <div class="streak-number-overlay">
+                    {{ user.current_streak }}
+                  </div>
+                  <div class="streak-fire">🔥</div>
+                </div>
+                <div class="streak-stats">
+                  <p>Best: {{ user.best_streak }} days</p>
+                  <p>Current: {{ user.current_streak }} days</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Leaderboard</h5>
+              <ol class="list-group">
+                {% for leader in leaderboard %}
+                <li class="list-group-item">
+                  {% if loop.index == 1 %}
+                  <span class="crown gold">👑</span>
+                  {% elif loop.index == 2 %}
+                  <span class="crown silver">👑</span>
+                  {% elif loop.index == 3 %}
+                  <span class="crown bronze">👑</span>
+                  {% endif %} {{ leader.username }} - {{ leader.total_experience
+                  }}XP
+                </li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/home.js"></script>
+    <script src="/static/update.js"></script>
+  </body>
+</html>

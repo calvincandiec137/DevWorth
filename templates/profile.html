@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevWorth - Profile</title>
+    <link rel="stylesheet" href="/static/profile.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/home" class="navbar-brand">DevWorth</a>
+            <div class="nav-links">
+                <a href="/home" class="nav-link">Home</a>
+                <form action="/logout" method="post" class="logout-form">
+                    <button type="submit" class="nav-link logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="profile-icon">
+                    <span class="avatar">{{ user.username[0].upper() }}</span>
+                </div>
+                <h2 class="profile-name">{{ user.username }}</h2>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Experience</span>
+                        <span class="stat-value">{{ total_exp }} XP</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Current Streak</span>
+                        <span class="stat-value">{{ user.current_streak }} days</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Best Streak</span>
+                        <span class="stat-value">{{ user.best_streak }} days</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="activity-card">
+                <h3 class="card-title">Monthly Activity</h3>
+                <div class="date-selector">
+                    <select id="monthYearSelect" class="date-select">
+                        <!-- Will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="activity-graph">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        
+        let chart = null;
+
+        function updateChart() {
+            const monthYear = document.getElementById('monthYearSelect').value;
+            const [year, month] = monthYear ? monthYear.split('-') : [null, null];
+            
+            fetch(`/get_activity_data?month=${month}&year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate date selector
+                    if (!monthYear) {
+                        const select = document.getElementById('monthYearSelect');
+                        select.innerHTML = '<option value="">Select Month</option>' +
+                            data.available_dates.map(date => {
+                                const [year, month] = date.split('-');
+                                const monthName = new Date(year, month - 1).toLocaleString('default', { month: 'long' });
+                                return `<option value="${date}">${monthName} ${year}</option>`;
+                            }).join('');
+                    }
+
+                    // Update or create chart
+                    const ctx = document.getElementById('activityChart').getContext('2d');
+                    
+                    if (chart) {
+                        chart.destroy();
+                    }
+                    
+                    if (data.dates.length === 0) {
+                        // Show no data message
+                        ctx.font = '16px Arial';
+                        ctx.fillStyle = '#666';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('No activity data for selected month', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                        return;
+                    }
+
+                    chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.dates,
+                            datasets: [{
+                                label: 'Experience Gained',
+                                data: data.experience,
+                                borderColor: '#4CAF50',
+                                tension: 0.4,
+                                fill: true,
+                                backgroundColor: 'rgba(76, 175, 80, 0.1)'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+        }
+
+        document.getElementById('monthYearSelect').addEventListener('change', updateChart);
+        updateChart(); // Initial load
+    </script>
+</body>
+</html>

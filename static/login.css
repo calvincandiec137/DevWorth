@@ -1,0 +1,174 @@
+:root {
+    --primary: #2c3e50;
+    --primary-light: #3498db;
+    --white: #ffffff;
+    --off-white: #ecf0f1;
+    --gray: #bdc3c7;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--white);
+    font-family: 'Arial', sans-serif;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.authentication {
+    margin-top: 0;
+    display: block;
+    width: 90%;
+    max-width: 400px;
+    font-size: 1.7rem; /* Reduced from 2rem to ~1.7rem */
+    background-color: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.inner-container {
+    margin: 1.5rem;
+    background-color: var(--off-white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: inset 0 2px 4px var(--shadow);
+}
+
+.authentication input {
+    font-size: 0.85rem; /* Reduced from 1rem to ~0.85rem */
+    height: 2.55rem; /* Reduced from 3rem to ~2.55rem */
+    margin: 0.5rem 0;
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: var(--white);
+    border: 1px solid var(--gray);
+    padding: 0 0.85rem; /* Reduced padding slightly */
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.authentication input:focus {
+    border: 4px solid var(--black);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    outline: none;
+}
+
+.authentication p {
+    margin: 0 1rem 0.5rem;
+    font-weight: bold;
+}
+
+.login, .forgot-password, .new-account {
+    text-decoration: none;
+    font-size: 0.74rem; /* Reduced from 0.875rem to ~0.74rem */
+    color: var(--primary);
+    transition: color 0.3s;
+}
+
+.login:hover, .forgot-password:hover, .new-account:hover {
+    color: var(--primary-light);
+}
+
+.query {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.new-account {
+    margin-right: 1rem;
+}
+
+.forgot-password, .login {
+    margin-left: 1rem;
+}
+
+#head {
+    font-size: 2.13rem; /* Reduced from 2.5rem to ~2.13rem */
+    font-weight: 600;
+    text-align: center;
+    color: var(--primary);
+}
+
+#submit-btn {
+    width: 100%;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    font-weight: bold;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 0.64rem; /* Reduced from 0.75rem to ~0.64rem */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#submit-btn:hover {
+    background-color: #000000;
+    transform: scale(1.05);
+}
+
+@media (max-width: 499px) {
+    :root {
+        font-size: 14px;
+    }
+
+    .authentication {
+        width: 95%;
+        font-size: 1.27rem; /* Reduced from 1.5rem to ~1.27rem */
+    }
+
+    .inner-container {
+        margin: 0.5rem;
+    }
+
+    .authentication input {
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+        width: calc(100% - 1rem);
+    }
+
+    input::placeholder {
+        opacity: 0.5;
+    }
+
+    .login, .forgot-password, .new-account {
+        font-size: 0.68rem; /* Reduced from 0.8rem to ~0.68rem */
+    }
+
+    .query {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-account, .forgot-password, .login {
+        margin: 0.5rem 0;
+    }
+}
+
+@media (min-width: 500px) {
+    .inner-container {
+        margin: 1.5rem;
+    }
+
+    .new-account {
+        margin-right: 1.5rem;
+    }
+
+    .forgot-password, .login {
+        margin-left: 1.5rem;
+    }
+
+    .login, .forgot-password, .new-account {
+        font-size: 0.64rem; /* Reduced from 0.75rem to ~0.64rem */
+    }
+
+    .authentication {
+        width: 80%;
+    }
+}
